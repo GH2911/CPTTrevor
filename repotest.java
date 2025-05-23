@@ -7,5 +7,10 @@ public class repotest{
 		con.println("CPT Time!");
 		con.println("More");
 		con.println("I camt do ts");
+		int intCount;
+		String strWord = "Wellington";
+		for(intCount = 0; intCount < 5; intCount++){
+			con.println(strWord);
+		}
 	}
 }
