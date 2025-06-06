@@ -1,7 +1,6 @@
 import arc.*;
 public class cards{
-	public static void main(String[] args){
-		Console con = new Console();
+	public static int[][] card(){
 		int intCards[][];
 		intCards = new int[52][3];
 		//Diamonds
@@ -225,7 +224,14 @@ public class cards{
 			}else if(intCards[intCount][1] == 4){
 				strSuit = "Spades";
 			}
-			hand.println(strCard+" of "+strSuit);
-		}												
+			hand.println(strCard+" of "+strSuit+" - "+(intCount+1));
+		}
+		int intFull[][];
+		intFull = new int[10][2];
+		for(intCount2 = 0; intCount2<10; intCount2++){
+			intFull[intCount2][0] = intCards[intCount2][0];
+			intFull[intCount2][1] = intCards[intCount2][1];
+		}
+		return intFull;								
 	}
 }
