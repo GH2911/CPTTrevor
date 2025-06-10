@@ -16,6 +16,7 @@ public class pokergame{
 		int intSelect6;
 		String strName;
 		String strCard;
+		String strWin;
 		con.println("Poker game");
 		con.println("Select option:");
 		con.println("Play - 1");
@@ -59,6 +60,7 @@ public class pokergame{
 				strCard = hand.readLine();
 				con.println(strCard);
 			}
+			hand.close();
 			//Card switcher tech
 			con.print("\nHow many cards do you want to switch? ");
 			intSelect1 = con.readInt();
@@ -162,9 +164,88 @@ public class pokergame{
 				}
 			con.println(strCards+" of "+strSuit);
 			}
-			for(intCount = 0; intCount < 5; intCount++){
-				con.println(intHand[intCount][0]+" - "+intHand[intCount][1]);
+			//Now for the logic calculations
+			strWin = cards.winnings(intHand);
+			con.println("\n"+strWin);
+			if(strWin == "RF"){
+				intBet = intBet*800;
+				intWallet = intWallet+intBet;
+				con.println("Congratulations, "+strName+"! You got a royal flush. You now have "+intWallet+" dollars");
+			}else if(strWin == "SF"){
+				intBet = intBet*50;
+				intWallet = intWallet+intBet;
+				con.println("Congratulations, "+strName+"! You got a straight flush. You now have "+intWallet+" dollars");
+			}else if(strWin == "Q"){
+				intBet = intBet*25;
+				intWallet = intWallet+intBet;
+				con.println("Congratulations, "+strName+"! You got a four of a kind. You now have "+intWallet+" dollars");
+			}else if(strWin == "B"){
+				intBet = intBet*9;
+				intWallet = intWallet+intBet;
+				con.println("Congratulations, "+strName+"! You got a full house. You now have "+intWallet+" dollars");
+			}else if(strWin == "F"){
+				intBet = intBet*6;
+				intWallet = intWallet+intBet;
+				con.println("Congratulations, "+strName+"! You got a flush. You now have "+intWallet+" dollars");
+			}else if(strWin == "St"){
+				intBet = intBet*4;
+				intWallet = intWallet+intBet;
+				con.println("Congratulations, "+strName+"! You got a straight. You now have "+intWallet+" dollars");
+			}else if(strWin == "S"){
+				intBet = intBet*3;
+				intWallet = intWallet+intBet;
+				con.println("Congratulations, "+strName+"! You got a straight. You now have "+intWallet+" dollars");
+			}else if(strWin == "2P"){
+				intBet = intBet*2;
+				intWallet = intWallet+intBet;
+				con.println("Congratulations, "+strName+"! You got 2 pairs. You now have "+intWallet+" dollars!");
+			}else if(strWin == "P"){
+				intBet = intBet*1;
+				intWallet = intWallet+intBet;
+				con.println("Congratulations, "+strName+"! You got a pair. You still have "+intWallet+" dollars!");
+			}else if(strWin == "N"){
+				intBet = intBet*0;
+				intWallet = intWallet+intBet;
+				con.println("How unfortunate "+strName+". You lost your bet. You now have "+intWallet+" dollars.");
 			}
+			// Save to leaderboard
+            TextOutputFile lead = new TextOutputFile("leadboard.txt", true);
+			lead.println(strName);
+			lead.println(intWallet);
+			lead.close();
+
+            } else if (choice == 2) {
+                con.clear();
+                con.println("=== LEADERBOARD ===");
+
+                String[][] leaderboard = new String[100][3];
+                int leaderCount = 0;
+                TextInputFile in = new TextInputFile("leaderboard.txt");
+                while(in.eof() != true){
+leaderboard[leaderCount][0] = in.readLine();
+leaderboard[leaderCount][1] = in.readLine();
+leaderboard[leaderCount][2] = in.readLine();
+leaderCount++;
+                        
+                }
+
+                // Sort by score
+                for (int i = 0; i < leaderCount - 1; i++) {
+                    for (int j = 0; j < leaderCount - i - 1; j++) {
+                        if (Integer.parseInt(leaderboard[j][2]) < Integer.parseInt(leaderboard[j + 1][2])) {
+                            String[] temp = leaderboard[j];
+                            leaderboard[j] = leaderboard[j + 1];
+                            leaderboard[j + 1] = temp;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < leaderCount; i++) {
+                    con.println(leaderboard[i][0] + " | " + leaderboard[i][1] + " | " + leaderboard[i][2] + "%");
+                }
+
+                con.println("Press Enter to return to menu...");
+                con.readLine();
 		}
 	}
 }
