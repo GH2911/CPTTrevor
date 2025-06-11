@@ -265,8 +265,14 @@ public class cards{
 				}
 			}
 		}
+		int intMath2;
+		int intMath3;
+		int intMath4;
 		intMath = intFinal[4][0] - intFinal[0][0];
-		if(intMath == 4){
+		intMath2 = intFinal[3][0] - intFinal[0][0];
+		intMath3 = intFinal[2][0] - intFinal[0][0];
+		intMath4 = intFinal[1][0] - intFinal[0][0];
+		if(intMath == 4 && intMath2 == 3 && intMath3 == 2 && intMath4 == 1){
 			blnStraight = true;
 		}else if(intFinal[0][0] == 1 && intFinal[1][0] == 10 && intFinal[2][0] == 11 && intFinal[3][0] == 12 && intFinal[4][0] == 13){
 			blnBroad = true;

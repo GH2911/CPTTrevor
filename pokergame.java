@@ -38,18 +38,25 @@ public class pokergame{
 				intThing = 1;
 				intBet = -500;
 				
-				while(intThing == 1 && (intBet <= 0 || intBet > intWallet)){
-					while(intBet <= 0 || intBet > intWallet){
+				while(intThing == 1 && (intBet <= 0 || intBet > intWallet)&&strGame == "N"){
+					while(intBet <= 0 && intBet < intWallet && intWallet != 0){
 						con.println("You have "+intWallet+" dollars "+strName+", enjoy your game!");
 						con.println("");
 						con.print("How much do you want to bet: ");
 						intBet = con.readInt();
-						if(intBet <= 0 || intBet > intWallet){
+						if(intWallet <= 0){
+							con.println("Unfortunately you're out of money, better luck next time!");
+							con.sleep(1000);
+							intThing = 2;
+							strGame = "Y";
+							con.clear();
+						}else if(intBet <= 0 || intBet > intWallet){
 							con.println("Very funny, please try again");
 							con.sleep(1000);
 							con.clear();
 						}
 					}
+					//Main game
 					con.clear();
 					con.println("Your bet is: "+intBet+" dollars");
 					//Return the full thing, hand and reserve cards
@@ -233,7 +240,6 @@ public class pokergame{
 					con.println("Quit to main menu - 2");
 					con.print("What would you like to do? Select the number next to the option you choose: ");
 					intThing = con.readInt();
-					strGame = "Y";
 					while(intThing != 1 && intThing != 2){
 						con.clear();
 						con.println("You have "+intWallet+" dollars");
@@ -243,8 +249,11 @@ public class pokergame{
 						intThing = con.readInt();
 					}
 					if(intThing == 1){
+						intBet = -500;
 						con.clear();
+						strGame = "N";
 					}else if(intThing == 2){
+						strGame = "Y";
 						con.clear();
 						// Save to leaderboard
 						TextOutputFile lead = new TextOutputFile("leadboard.txt", true);
