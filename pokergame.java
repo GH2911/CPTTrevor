@@ -1,8 +1,19 @@
-//
+//-------------------------------------------------------------------------
+// Name: Trevor Lee
+// Program: Poker
+// Last Modified: June 12, 2025
+// Version Number: 10
+//-------------------------------------------------------------------------
+
 import arc.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.Color.*;
+
 public class pokergame{
 	public static void main(String[] args){
 		Console con = new Console("Poker Game", 1280, 720);
+		BufferedImage imgPoker = con.loadImage("pokerimg.jpg");
 		int intChoice;
 		int intNum;
 		int intWallet;
@@ -21,17 +32,24 @@ public class pokergame{
 		String strCard;
 		String strWin;
 		while(strGame.equals("Y")){
-			con.println("Poker game");
-			con.println("Select option:");
-			con.println("Play - 1");
-			con.println("Leaderboard - 2");
-			con.println("Rules - 3");
-			con.println("Quit game - 4");
-			con.println("");
-			con.print("Selection: ");
+			con.drawImage(imgPoker, 0, 0);
+			
+			for(intCount = 0; intCount < 10; intCount++){
+				con.println("");
+			}
+			con.println("    Select option:");
+			con.println("    Play - 1");
+			con.println("    Leaderboard - 2");
+			con.println("    Rules - 3");
+			con.println("    Quit game - 4");
+			con.print("    Selection: ");
 			intChoice = con.readInt();
 			if(intChoice == 1){
 				con.clear();
+				
+				con.setBackgroundColor(Color.BLACK);
+				
+				
 				con.println("What's your name?");
 				strName = con.readLine();
 				//Cheat code "statitan"
@@ -170,6 +188,7 @@ public class pokergame{
 					}else{
 						con.println("I'm going to assume you just wanted to switch no cards");
 					}
+					con.sleep(1000);
 					//Clear screen to make it cleaner
 					con.clear();
 					con.println("Your bet is: "+intBet+" dollars");
@@ -219,6 +238,7 @@ public class pokergame{
 					//Now for the logic calculations
 					strWin = cards.winnings(intHand);
 					System.out.println(strWin);
+					con.println("");
 					if(strWin == "RF"){
 						intBet = intBet*800;
 						intWallet = intWallet+intBet;
@@ -289,12 +309,24 @@ public class pokergame{
 				//Leaderboard
 				String strLeaderboard[][];
 				int intLC=0;
+				String strReader;
+				int intCounter=0;
 				String strNameTemp;
 				String strWalletTemp;
 				con.clear();
+				con.setBackgroundColor(Color.BLACK);
 				con.println("==Leaderboard==");
 				strGame = "N";
-				strLeaderboard = new String[100][2];
+				TextInputFile boar = new TextInputFile("leadboard.txt");
+				while(boar.eof() == false){
+					strReader = boar.readLine();
+					strReader = boar.readLine();
+					intCounter++;
+					System.out.println("TEST: " +intCounter);
+				}
+				System.out.println(intCounter);
+				boar.close();
+				strLeaderboard = new String[intCounter][2];
 				TextInputFile board = new TextInputFile("leadboard.txt");
                 while(board.eof() == false){
 					strLeaderboard[intLC][0] = board.readLine();
@@ -315,7 +347,7 @@ public class pokergame{
                         }
                     }
                 }
-                for (intCount = 0; intCount < intLC; intCount++){
+                for(intCount = 0; intCount < intLC; intCount++){
                     con.println(strLeaderboard[intCount][0]+" | "+strLeaderboard[intCount][1]);
                 }
                 con.println("When you want to go back to the main menu, press \"y\"");
@@ -327,6 +359,7 @@ public class pokergame{
 			}else if(intChoice == 3){
 				//Rules
 				con.clear();
+				con.setBackgroundColor(Color.BLACK);
 				con.println("Here's how to play video poker:");
 				con.println("You tell me your name and I'll give you some money");
 				con.println("You will be allowed to choose how much you want to bet");
@@ -355,9 +388,10 @@ public class pokergame{
 			}else if(intChoice == 4){
 				//Quit game
                 con.closeConsole();
-            }else if(intChoice == 69){
+            }else if(intChoice == 69 || intChoice == 420){
 				//Secret menu
 				con.clear();
+				con.setBackgroundColor(Color.BLACK);
 				con.println("Congrats on finding the secret menu!");
 				con.println("As your reward, here's a funny joke:");
 				con.println("\nWhy do programmers perfer dark mode?");

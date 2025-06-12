@@ -1,3 +1,9 @@
+//-------------------------------------------------------------------------
+// Name: Trevor Lee
+// Program: Poker
+// Last Modified: June 12, 2025
+// Version Number: 10
+//-------------------------------------------------------------------------
 import arc.*;
 public class cards{
 	public static int[][] card(){
