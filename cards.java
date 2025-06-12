@@ -10,8 +10,8 @@ public class cards{
 		int intRandom;
 		
 		
-		for(intCount = 0; intCount <= 3; intCount++){
-			for(intValue = 1; intValue <= 13; intValue++){
+		for(intCount = 0; intCount < 4; intCount++){
+			for(intValue = 1; intValue < 14; intValue++){
 				intCards[intValue - 1 + intCount * 13][0] = intValue;
 				intCards[intValue - 1 + intCount * 13][1] = intSuit;
 				intRandom = (int)(Math.random() * 100 + 1);

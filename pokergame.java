@@ -1,7 +1,8 @@
+//
 import arc.*;
 public class pokergame{
 	public static void main(String[] args){
-		Console con = new Console();
+		Console con = new Console("Poker Game", 1280, 720);
 		int intChoice;
 		int intNum;
 		int intWallet;
@@ -32,14 +33,25 @@ public class pokergame{
 			if(intChoice == 1){
 				con.clear();
 				con.println("What's your name?");
-				strName = con.readLine();		
-				intWallet = 1000;
+				strName = con.readLine();
+				//Cheat code "statitan"
+				if(strName.equalsIgnoreCase("statitan")){
+					con.println("");
+					con.println("Ahh, a distinguished VIP!");
+					con.sleep(1000);
+					con.println("You get 10 times more money to start than everyone else.");
+					con.sleep(2000);
+					intWallet = 10000;
+				}else{		
+					intWallet = 1000;
+				}
 				strGame = "N";
 				intThing = 1;
 				intBet = -500;
 				
 				while(intThing == 1 && (intBet <= 0 || intBet > intWallet)&&strGame == "N"){
-					while(intBet <= 0 && intBet < intWallet && intWallet != 0){
+					while(intBet <= 0 && (intBet < intWallet || intWallet != 0)){
+						con.clear();
 						con.println("You have "+intWallet+" dollars "+strName+", enjoy your game!");
 						con.println("");
 						con.print("How much do you want to bet: ");
@@ -50,15 +62,27 @@ public class pokergame{
 							intThing = 2;
 							strGame = "Y";
 							con.clear();
+							System.out.println("No money");
+							TextOutputFile board = new TextOutputFile("leadboard.txt", true);
+							board.println(strName);
+							board.println(intWallet);
+							board.close();
+							break;
 						}else if(intBet <= 0 || intBet > intWallet){
 							con.println("Very funny, please try again");
 							con.sleep(1000);
 							con.clear();
+							intBet = -500;
+							System.out.println("Bad Bet");
 						}
+					}
+					if(strGame == "Y"){
+						break;
 					}
 					//Main game
 					con.clear();
 					con.println("Your bet is: "+intBet+" dollars");
+					intWallet = intWallet - intBet;
 					//Return the full thing, hand and reserve cards
 					int intAll[][];
 					intAll = new int[10][2];
@@ -194,7 +218,7 @@ public class pokergame{
 					}
 					//Now for the logic calculations
 					strWin = cards.winnings(intHand);
-					con.println("\n"+strWin);
+					System.out.println(strWin);
 					if(strWin == "RF"){
 						intBet = intBet*800;
 						intWallet = intWallet+intBet;
@@ -222,19 +246,18 @@ public class pokergame{
 					}else if(strWin == "S"){
 						intBet = intBet*3;
 						intWallet = intWallet+intBet;
-						con.println("Congratulations, "+strName+"! You got a straight. You now have "+intWallet+" dollars");
+						con.println("Congratulations, "+strName+"! You got a three of a kind. You now have "+intWallet+" dollars");
 					}else if(strWin == "2P"){
 						intBet = intBet*2;
 						intWallet = intWallet+intBet;
-						con.println("Congratulations, "+strName+"! You got 2 pairs. You now have "+intWallet+" dollars!");
+						con.println("Congratulations, "+strName+"! You got 2 pairs. You now have "+intWallet+" dollars");
 					}else if(strWin == "P"){
 						intBet = intBet*1;
 						intWallet = intWallet+intBet;
-						con.println("Congratulations, "+strName+"! You got a pair of Jacks or higher.");
-						con.println("You still have "+intWallet+" dollars!");
+						con.println("Congratulations, "+strName+"! You got a pair of Jacks or higher");
+						con.println("You still have "+intWallet+" dollars");
 					}else if(strWin == "N"){
-						intWallet = intWallet-intBet;
-						con.println("How unfortunate "+strName+". You lost your bet. You now have "+intWallet+" dollars.");
+						con.println("How unfortunate "+strName+". You lost your bet. You now have "+intWallet+" dollars");
 					}
 					con.println("\nPlay again - 1");
 					con.println("Quit to main menu - 2");
@@ -269,7 +292,7 @@ public class pokergame{
 				String strNameTemp;
 				String strWalletTemp;
 				con.clear();
-				con.println("=== LEADERBOARD ===");
+				con.println("==Leaderboard==");
 				strGame = "N";
 				strLeaderboard = new String[100][2];
 				TextInputFile board = new TextInputFile("leadboard.txt");
@@ -297,12 +320,63 @@ public class pokergame{
                 }
                 con.println("When you want to go back to the main menu, press \"y\"");
                 while(con.getChar() != 'y'){
-					System.out.println("MM Test");
+					System.out.println("Key press");
 				}
-				
 				strGame = "Y";
 				con.clear();
-				
+			}else if(intChoice == 3){
+				//Rules
+				con.clear();
+				con.println("Here's how to play video poker:");
+				con.println("You tell me your name and I'll give you some money");
+				con.println("You will be allowed to choose how much you want to bet");
+				con.println("Once your bet is locked in, I'll give you 5 cards");
+				con.println("You get to choose how many cards you want to switch");
+				con.println("You could switch none of your cards, 1 of them, or all of them! The choice is yours");
+				con.println("After choosing, your final hand will be analyzed");
+				con.println("If you get a pair of Jacks or higher, you win!");
+				con.println("Anything less and you lose your bet");
+				con.println("\nHere are the winnings you could earn:");
+				con.println("Royal Flush - 800x your bet");
+				con.println("Straight Flush - 50x your bet");
+				con.println("Four Of A Kind - 25x your bet");
+				con.println("Full House - 9x your bet");
+				con.println("Flush - 6x your bet");
+				con.println("Straight - 4x your bet");
+				con.println("Three Of A Kind - 3x your bet");
+				con.println("Two Pairs - 2x your bet");
+				con.println("A pair of Jacks or Higher - 1x your bet");
+				con.println("\n\nWhen you want to go back to the main menu, press \"y\"");
+                while(con.getChar() != 'y'){
+					System.out.println("Key press");
+				}
+				strGame = "Y";
+				con.clear();
+			}else if(intChoice == 4){
+				//Quit game
+                con.closeConsole();
+            }else if(intChoice == 69){
+				//Secret menu
+				con.clear();
+				con.println("Congrats on finding the secret menu!");
+				con.println("As your reward, here's a funny joke:");
+				con.println("\nWhy do programmers perfer dark mode?");
+				con.sleep(3000);
+				con.println("\nBecause the light attracts bugs!");
+				con.println("\n\nWhen you want to go back to the main menu, press \"y\"");
+                while(con.getChar() != 'y'){
+					System.out.println("Key press");
+				}
+				strGame = "Y";
+				con.clear();
+            }else if(intChoice == 2911){
+				//Quick leaderboard clear - developer easter egg
+				con.clear();
+				TextOutputFile leaderboard = new TextOutputFile("leadboard.txt");
+				leaderboard.close();
+				System.out.println("Leaderboard cleared");
+			}else{
+				con.clear();
 			}
 		}
 	}
